@@ -1,6 +1,17 @@
 <template>
   <aside class="menu">
     <p class="menu-label">
+      Snippets
+    </p>
+    <ul class="menu-list">
+      <li>
+        <a :class="{'is-active': !gistsSelected}" @click="selectGists(false)">Local <b-icon icon="laptop" class="is-pulled-right"></b-icon></a>
+      </li>
+      <li>
+        <a :class="{'is-active': gistsSelected}" @click="selectGists(true)">Gists <b-icon icon="github" class="is-pulled-right"></b-icon></a>
+      </li>
+    </ul>
+    <p class="menu-label">
       Languages
     </p>
     <ul class="menu-list">
@@ -26,9 +37,17 @@ export default {
     selectLanguage(language) {
       this.$store.dispatch('selectLanguage', language);
     },
+    selectGists(gistsSelected) {
+      this.$store.dispatch('selectGists', gistsSelected);
+    },
   },
   computed: {
-    ...Vuex.mapGetters(['languages', 'snippets', 'languageSelected']),
+    ...Vuex.mapGetters([
+      'languages',
+      'snippets',
+      'languageSelected',
+      'gistsSelected'
+    ]),
   },
 };
 </script>

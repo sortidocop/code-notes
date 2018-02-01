@@ -3,6 +3,7 @@ import db from '../../datastore';
 const state = {
   snippets: [],
   languageSelected: 'all',
+  gistsSelected: false
 };
 
 const mutations = {
@@ -22,10 +23,16 @@ const mutations = {
   SELECT_LANGUAGE(state, language) {
     state.languageSelected = language;
   },
+  SELECT_GISTS(state, gistsSelected) {
+    state.gistsSelected = gistsSelected;
+  }
 };
 
 const actions = {
   loadSnippets(store) {
+    if (store.state.gistsSelected) {
+      return store.commit('LOAD_SNIPPETS', []);
+    }
     return db.find({}, (err, snippets) => {
       if (!err) {
         store.commit('LOAD_SNIPPETS', snippets);
@@ -56,6 +63,10 @@ const actions = {
   selectLanguage(store, language) {
     store.commit('SELECT_LANGUAGE', language);
   },
+  selectGists(store, gists) {
+    store.commit('SELECT_GISTS', gists);
+    store.dispatch('loadSnippets');
+  },
 };
 
 const getters = {
@@ -77,6 +88,7 @@ const getters = {
     return map;
   },
   languageSelected: state => state.languageSelected,
+  gistsSelected: state => state.gistsSelected,
 };
 
 export default {

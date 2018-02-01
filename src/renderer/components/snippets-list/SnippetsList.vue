@@ -21,7 +21,7 @@ export default {
   mounted() {},
   methods: {},
   computed: {
-    ...Vuex.mapGetters(['snippets', 'snippetById', 'languageSelected']),
+    ...Vuex.mapGetters(['snippets', 'snippetById', 'languageSelected', 'gistsSelected']),
     snippetsFiltered() {
       const snippetsFiltered = this.snippets.filter(item =>
         this.searchField

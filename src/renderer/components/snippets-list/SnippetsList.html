@@ -33,7 +33,7 @@
   <div v-if="snippetsFiltered.length === 0 && searchField !== ''" class="columns snippets">
     <div class="column is-12 no-snippet">
       <h1>Oh :(</h1>
-      <h2>Sorry, no snippets found for your search</h2>
+      <h2>Sorry, no {{gistsSelected ? 'gists' : 'snippets'}} found for your search</h2>
     </div>
   </div>
 
