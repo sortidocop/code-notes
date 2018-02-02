@@ -10,7 +10,6 @@ import App from './App';
 
 import router from './router';
 import store from './store';
-import db from './datastore';
 
 require('brace/mode/text');
 require('brace/mode/elixir');
@@ -53,8 +52,6 @@ Vue.filter('capitalize', value => {
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 Vue.http = Vue.prototype.$http = axios;
 Vue.config.productionTip = false;
-
-Vue.prototype.$db = db;
 
 /* eslint-disable no-new */
 new Vue({

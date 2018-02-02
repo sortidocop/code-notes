@@ -5,17 +5,20 @@
 import Vuex from 'vuex';
 import SnippetCard from './snippet-card/SnippetCard';
 import CreateSnippetModal from '../modals/create-snippet-modal/CreateSnippetModal';
+import SettingsModal from '../modals/settings-modal/SettingsModal';
 
 export default {
   name: 'cb-snippets-list',
   components: {
     'cb-snippet-card': SnippetCard,
     'cb-create-snippet-modal': CreateSnippetModal,
+    'cb-settings-modal': SettingsModal,
   },
   data() {
     return {
       searchField: '',
       createSnippetModalActive: false,
+      settingsModalActive: false
     };
   },
   mounted() {},
@@ -46,6 +49,7 @@ export default {
   beforeRouteEnter(route, redirect, next) {
     next(vm => {
       vm.$store.dispatch('loadSnippets');
+      vm.$store.dispatch('loadSettings');
     });
   },
 };

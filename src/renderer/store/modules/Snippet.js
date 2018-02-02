@@ -1,4 +1,11 @@
-import db from '../../datastore';
+import db from '../../datastore-snippets';
+
+const octokit = require('@octokit/rest')({
+  requestMedia: 'application/vnd.github.v3+json',
+  headers: {
+    'user-agent': 'octokit/rest.js v1.2.3'
+  }
+});
 
 const state = {
   snippets: [],
@@ -31,7 +38,27 @@ const mutations = {
 const actions = {
   loadSnippets(store) {
     if (store.state.gistsSelected) {
-      return store.commit('LOAD_SNIPPETS', []);
+      octokit.authenticate({
+        type: 'token',
+        token: store.rootState.Settings.settings.githubPersonalAccessToken
+      });
+      octokit.gists.getAll().then((res) => {
+
+        const snippets = [];
+
+        res.data.forEach(gist => {
+          Object.keys(gist.files).forEach(key => {
+            snippets.push({
+              name: key,
+              description: gist.description,
+              language: 'javascript',
+              content: 'hello world'
+            });
+          });
+        });
+
+        store.commit('LOAD_SNIPPETS', snippets);
+      });
     }
     return db.find({}, (err, snippets) => {
       if (!err) {
@@ -47,14 +74,14 @@ const actions = {
     });
   },
   updateSnippet(store, snippet) {
-    return db.update({ _id: snippet._id }, snippet, {}, err => {
+    return db.update({_id: snippet._id}, snippet, {}, err => {
       if (!err) {
         store.dispatch('loadSnippets');
       }
     });
   },
   deleteSnippet(store, snippet) {
-    return db.remove({ _id: snippet._id }, {}, err => {
+    return db.remove({_id: snippet._id}, {}, err => {
       if (!err) {
         store.commit('DELETE_SNIPPET', snippet);
       }
