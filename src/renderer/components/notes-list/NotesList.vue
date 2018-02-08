@@ -21,7 +21,7 @@ export default {
   mounted() {},
   methods: {},
   computed: {
-    ...Vuex.mapGetters(['notes', 'noteById', 'languageSelected']),
+    ...Vuex.mapGetters(['notes', 'noteById', 'languageSelected', 'gistsSelected']),
     notesFiltered() {
       const notesFiltered = this.notes.filter(item =>
         this.searchField

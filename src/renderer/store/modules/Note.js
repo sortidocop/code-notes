@@ -3,6 +3,7 @@ import db from '../../datastore-notes';
 const state = {
   notes: [],
   languageSelected: 'all',
+  gistsSelected: false
 };
 
 const mutations = {
@@ -20,10 +21,16 @@ const mutations = {
   SELECT_LANGUAGE(state, language) {
     state.languageSelected = language;
   },
+  SELECT_GISTS(state, gistsSelected) {
+    state.gistsSelected = gistsSelected;
+  }
 };
 
 const actions = {
   loadNotes(store) {
+    if (store.state.gistsSelected) {
+      return store.commit('LOAD_NOTES', []);
+    }
     return db.find({}, (err, notes) => {
       if (!err) {
         store.commit('LOAD_NOTES', notes);
@@ -38,14 +45,14 @@ const actions = {
     });
   },
   updateNote(store, note) {
-    return db.update({ _id: note._id }, note, {}, err => {
+    return db.update({_id: note._id}, note, {}, err => {
       if (!err) {
         store.dispatch('loadNotes');
       }
     });
   },
   deleteNote(store, note) {
-    return db.remove({ _id: note._id }, {}, err => {
+    return db.remove({_id: note._id}, {}, err => {
       if (!err) {
         store.commit('DELETE_NOTE', note);
       }
@@ -53,6 +60,10 @@ const actions = {
   },
   selectLanguage(store, language) {
     store.commit('SELECT_LANGUAGE', language);
+  },
+  selectGists(store, gists) {
+    store.commit('SELECT_GISTS', gists);
+    store.dispatch('loadNotes');
   },
 };
 
@@ -87,6 +98,7 @@ const getters = {
     return total;
   },
   languageSelected: state => state.languageSelected,
+  gistsSelected: state => state.gistsSelected
 };
 
 export default {

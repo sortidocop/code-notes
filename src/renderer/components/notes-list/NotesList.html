@@ -24,7 +24,7 @@
   <div v-if="notesFiltered.length === 0 && searchField === ''" class="columns notes">
     <div class="column is-12 no-note">
       <h1>Hey !</h1>
-      <h2>You don't have any note...</h2>
+      <h2>You don't have any {{gistsSelected ? 'gist' : 'note'}}...</h2>
       <button class="button is-primary" @click="createNoteModalActive = true">
         Create a new one :)
       </button>
@@ -33,7 +33,7 @@
   <div v-if="notesFiltered.length === 0 && searchField !== ''" class="columns notes">
     <div class="column is-12 no-note">
       <h1>Oh :(</h1>
-      <h2>Sorry, no notes found for your search</h2>
+      <h2>Sorry, no {{gistsSelected ? 'gist' : 'note'}} found for your search</h2>
     </div>
   </div>
 

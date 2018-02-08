@@ -2,6 +2,7 @@
 </template>
 
 <script>
+  import Vuex from 'vuex';
   import editor from '../../editor/Editor';
   import languages from '../../../assets/data/languages.json';
   import converter from '../../../converter';
@@ -77,6 +78,7 @@
       }
     },
     computed: {
+      ...Vuex.mapGetters(['gistsSelected']),
       isDisabled() {
         return (
           !/\S/.test(this.note.name) ||
